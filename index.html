@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<!--
+Name:Suraj Khadka
+Course: CSC443
+Assignment: 2
+-->
+
+<html>
+
+<head>
+<title> Pacman Game </title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script>
+        ;
+        (function($) {
+
+            $.fn.jPacman = function(method) {
+
+                var defaults = {
+                    height: 16,
+                    width: 16,
+                    initialX: 14,
+                    initialY: 23,
+                    time: 282,
+                    score: 0,
+                    map: [
+                        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', '.', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'h', 'h', 'h', 'h', 'h', 'h', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', '.', '.', '.', 'X', 'h', 'h', 'h', 'h', 'h', 'h', 'X', '.', '.', '.', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'h', 'h', 'h', 'h', 'h', 'h', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X'],
+                        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', 'X'],
+                        ['X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X'],
+                        ['X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X'],
+                        ['X', '.', '.', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X'],
+                        ['X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+                        ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                    ]
+                }
+                var pacman; //Yellow Pacman
+
+                var stepping = [];
+                var step = 0;
+                var clearTime;
+                var clearTimeMove;
+                var isTakeTime;
+                var clearRepeat;
+                var OriginalMap;
+                var CoinsMap;
+                var change = 0;
+                var win = 0;
+                var element
+                var settings = {}
+                var methods = {
+                    init: function(options) {
+                        return this.each(function() {
+                            settings = $.extend({}, defaults, options)
+                            element = $(this);
+                            OriginalMap = jQuery.extend(true, [], settings.map);
+                            CoinsMap = jQuery.extend(true, [], settings.map);
+                            helpers.game('play');
+                        });
+                    },
+                    foo_public_method: function() {}
+                }
+                var helpers = {
+                    draw: function() {
+                        element.html('');
+
+                        for (var i = 0; i < CoinsMap.length; i++) {
+                            for (var j = 0; j < CoinsMap[i].length; j++) {
+                                if (CoinsMap[i][j] == '.') {
+                                    var x = element.offset().left + (j * settings.width);
+                                    var y = element.offset().top + (i * settings.height);
+                                    element.append('<i class="box coin" style="top:' + y + 'px; left: ' + x + 'px;" id="' + j + '_' + i + '"></i>');
+                                }
+
+                            }
+                        }
+                    },
+                    draw2: function(dummie) {
+                        var id = "";
+                        switch (dummie.initial) {
+                            case 'P':
+                                id = '#Pacman';
+                                break;
+                        }
+                        var x = element.offset().left + (dummie.x * settings.width);
+                        var y = element.offset().top + (dummie.y * settings.height);
+
+                        $(id).animate({
+                            "left": x,
+                            "top": y
+                        }, 262, 'linear');
+                    },
+                    game: function(status) {
+                        if (status == 'play') {
+                            modo = 'play'
+                            $('#score').html(settings.score);
+                            settings.map = jQuery.extend(true, [], OriginalMap);
+                            pacman = new Pacman(settings.initialX, settings.initialY, 'P');
+                            pacman.autoX = -1;
+                            pacman.autoY = 0;
+
+                            helpers.draw();
+
+                            helpers.put(pacman.x, pacman.y, pacman.initial);
+
+                            helpers.draw2(pacman);
+
+                            helpers.listen();
+
+                            isTakeTime = setInterval(helpers.isTake, 40);
+                            clearTimeMove = setInterval(helpers.autoMove, settings.time);
+                            clearTime = setInterval(helpers.hunt, settings.time);
+                            clearRepeat = setInterval(helpers.animatioPacman, 70);
+                        } else if (status == 'win') {
+                            clearInterval(isTakeTime);
+                            clearInterval(clearTimeMove);
+                            clearInterval(clearTime);
+                            clearInterval(clearRepeat);
+                            var x = element.offset().left + (12 * settings.width);
+                            var y = element.offset().top + (17 * settings.height);
+                            element.append('<i id="gameOver" style="top:' + y + 'px; left: ' + x + 'px;">You Win</i>')
+                        }
+                    },
+                    isTake: function() {
+                        if (win == 288) {
+                            helpers.game('win');
+                        }
+                    },
+                    put: function(x, y, dummie) {
+                        settings.map[y][x] = dummie;
+                        var id = '';
+                        switch (dummie) {
+                            case 'P':
+                                id = 'Pacman';
+                                break;
+                        }
+
+                        element.append('<i class="box dummie" id="' + id + '"></i>')
+
+                    },
+                    move: function(x, y) {
+                        var sw = false;
+                        if (x == 28) {
+                            x = 0;
+                        } else if (x == -1) {
+                            x = 27;
+                        }
+                        if (settings.map[y][x] != 'X') {
+                            sw = true;
+                        }
+                        return sw;
+                    },
+                    listen: function() {
+                        var x = 0,
+                            y = 0;
+                        $(document).bind('keydown', function(e) {
+                            switch (parseInt(e.which)) {
+                                case 87:
+                                case 38:
+                                    x = 0;
+                                    y = -1;
+                                    e.preventDefault();
+                                    break;
+                                case 83:
+                                case 40:
+                                    x = 0;
+                                    y = 1;
+                                    e.preventDefault();
+                                    break;
+                                case 65:
+                                case 37:
+                                    x = -1;
+                                    y = 0;
+                                    e.preventDefault();
+                                    break;
+                                case 68:
+                                case 39:
+                                    x = 1;
+                                    y = 0;
+                                    e.preventDefault();
+                                    break;
+
+                            }
+                            if (helpers.move(pacman.x + x, pacman.y + y, pacman.initial)) {
+                                pacman.autoX = x;
+                                pacman.autoY = y;
+                            }
+
+                        });
+
+                    },
+                    autoMove: function() {
+
+                        var x = pacman.autoX,
+                            y = pacman.autoY;
+                        if (helpers.move(pacman.x + x, pacman.y + y, pacman.initial)) {
+
+                            settings.map[pacman.y][pacman.x] = '.';
+
+                            if (pacman.x + x == 28) {
+                                pacman.x = 0;
+                                x = 0;
+                            } else if (pacman.x + x == -1) {
+                                pacman.x = 27;
+                                x = 0;
+                            }
+                            pacman.x += x;
+                            pacman.y += y;
+                            settings.map[pacman.y][pacman.x] = pacman.initial;
+                            pacman.sw = true;
+                        } else {
+                            pacman.sw = false;
+                        }
+                        helpers.draw2(pacman);
+                        if (CoinsMap[pacman.y][pacman.x] == '.') {
+                            $('#' + pacman.x + '_' + pacman.y).addClass('hidden');
+                            CoinsMap[pacman.y][pacman.x] = '-';
+                            $('#score').html(settings.score += 1);
+                            win++;
+                        }
+
+
+                    },
+                    resolve: function(x, y, lab) {
+                        if (x == -1 && y == 14) {
+                            x = 27;
+                        } else if (x == 28 && y == 14) {
+                            x = 0;
+                        }
+                        if (lab[y][x] == "P") {
+                            stepping[step] = new Point(x, y);
+                            step++;
+                            return true;
+                        }
+
+
+                        if (lab[y][x] != '.' && lab[y][x] != 'B' && lab[y][x] != 'P') {
+                            return false;
+                        } else if (x == -1 || x == 28) {
+                            stepping[step] = new Point(x, y);
+                            step++;
+                            lab[y][x] = 'o';
+                            return true;
+                        }
+                        lab[y][x] = '-';
+                        if (helpers.resolve(x, y - 1, lab, lab)) {
+                            lab[y - 1][x] = 'o';
+                            stepping[step] = new Point(x, y - 1);
+                            step++;
+                            return true;
+                        }
+                        if (helpers.resolve(x, y + 1, lab)) {
+                            lab[y + 1][x] = 'o';
+                            stepping[step] = new Point(x, y + 1);
+                            step++;
+                            return true;
+                        }
+                        if (helpers.resolve(x - 1, y, lab)) {
+                            lab[y][x - 1] = 'o';
+                            stepping[step] = new Point(x - 1, y);
+                            step++;
+                            return true;
+                        }
+
+                        if (helpers.resolve(x + 1, y, lab)) {
+                            lab[y][x + 1] = 'o';
+                            stepping[step] = new Point(x + 1, y);
+                            step++;
+                            return true;
+                        }
+                        lab[y][x] = '.';
+                        return false;
+
+                    },
+                    animatioPacman: function() {
+                        var up = "url(./img/pacman_U.gif)";
+                        var down = "url(./img/pacman_D.gif)";
+                        var left = "url(./img/pacman_L.gif)";
+                        var right = "url(./img/pacman_R.gif)";
+                        var current;
+                        if (pacman.autoX == 0 && pacman.autoY == -1) {
+                            $('#Pacman').css({
+                                backgroundImage: up
+                            });
+                            current = up;
+                        } else if (pacman.autoX == 0 && pacman.autoY == 1) {
+                            $('#Pacman').css({
+                                backgroundImage: down
+                            });
+                            current = down;
+                        } else if (pacman.autoX == -1 && pacman.autoY == 0) {
+                            $('#Pacman').css({
+                                backgroundImage: left
+                            });
+                            current = left;
+                        } else if (pacman.autoX == 1 && pacman.autoY == 0) {
+                            $('#Pacman').css({
+                                backgroundImage: right
+                            });
+                            current = right;
+                        }
+
+                        if (pacman.sw) {
+                            if (change == 0) {
+                                $('#Pacman').css({
+                                    backgroundImage: current
+                                });
+                                change = 1;
+                            } else {
+                                $('#Pacman').css({
+                                    backgroundImage: "url(./img/pacman.gif)"
+                                });
+                                change = 0;
+                            }
+                        } else {
+                            $('#Pacman').css({
+                                backgroundImage: current
+                            });
+                        }
+                    }
+
+                }
+
+                function Pacman(x, y, initial) {
+                    this.x = x;
+                    this.y = y;
+                    this.autoX;
+                    this.autoY;
+                    this.initial = initial;
+                    this.sw = true;
+                }
+
+                function Point(x, y) {
+                    this.x = x;
+                    this.y = y;
+                }
+
+                if (methods[method]) {
+                    return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                } else if (typeof method === 'object' || !method) {
+                    return methods.init.apply(this, arguments);
+                }
+            }
+        })(jQuery);
+    </script>
+</head>
+
+<body>
+    <div>
+        <div>
+            <div>
+                <ul class="nav nav-pills gameMenu">
+                    <li>
+                        <h3>Score: <b id="score"></b> </h3>
+                    </li>
+                </ul>
+                <div id="stage"></div><br>
+                <div class="">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#goUp').click(function() {
+                $('html, body').animate({
+                    scrollTop: 1
+                }, 'slow');
+            });
+            var check = 1;
+            $("#stage").append('<i id="gameOver" style="top:' + 370 + 'px; left: '  + 725 + 'px;">Ready!</i>');
+
+            document.onkeydown = function(e) {
+                if (check == 1) {
+                    $('#stage').jPacman();
+                }
+                check = 0;
+            };
+        })
+    </script>
+
+</body>
+
+</html>
